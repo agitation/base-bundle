@@ -1,14 +1,6 @@
 <?php
 
-$header = <<<"EOF"
-@package    agitation/base-bundle
-@link       http://github.com/agitation/base-bundle
-@author     Alexander Günsche
-@license    http://opensource.org/licenses/MIT
-EOF;
-
-error_reporting(-1);
-ini_set("display_errors", 1);
+$header = trim(file_get_contents(__DIR__ . "/.php_cs_header"));
 
 Symfony\CS\Fixer\Contrib\HeaderCommentFixer::setHeader($header);
 
