@@ -5,17 +5,6 @@ services:
         class: Agit\BaseBundle\Service\PluginProcessorService
         arguments: [  @kernel, @annotation_reader, @agit.common.classcollector ]
 
-
-    #
-    # CACHE stragety
-    #
-
-    agit.pluggable.cache.processor_factory:
-        private: true
-        class: Agit\BaseBundle\Pluggable\Cache\CacheProcessorFactory
-        arguments: [ @agit.common.cache.persistent, @?service_container ]
-        tags: [{ name: agit.pluggable.processor_factory, type: cache }]
-
     agit.pluggable.cache.loader_factory:
         class: Agit\BaseBundle\Pluggable\Cache\CacheLoaderFactory
         arguments: [ @agit.common.cache.persistent ]
@@ -35,36 +24,3 @@ services:
     agit.pluggable.object.loader_factory:
         class: Agit\BaseBundle\Pluggable\Object\ObjectLoaderFactory
         arguments: [ @agit.common.cache.persistent, @?service_container ]
-
-
-
-    #
-    # SEED stragety
-    #
-
-    agit.pluggable.seed.processor_factory:
-        private: true
-        class: Agit\BaseBundle\Pluggable\Seed\SeedProcessorFactory
-        arguments: [ @doctrine.orm.entity_manager, @?service_container ]
-        tags: [{ name: agit.pluggable.processor_factory, type: seed }]
-
-    # dummy pluggable service, only there for seeds to be registered
-    agit.pluggable.seed:
-        class: Agit\BaseBundle\Pluggable\Seed\SeedService
-        tags: [{ name: agit.pluggable, type: seed }]
-
-
-
-    #
-    # ENTITY stragety
-    #
-
-    agit.pluggable.entity.processor_factory:
-        private: true
-        class: Agit\BaseBundle\Pluggable\Entity\EntityProcessorFactory
-        arguments: [ @agit.pluggable.object.processor_factory, @agit.pluggable.seed.processor_factory, @?service_container ]
-        tags: [{ name: agit.pluggable.processor_factory, type: entity }]
-
-    agit.pluggable.entity.loader_factory:
-        class: Agit\BaseBundle\Pluggable\Entity\EntityLoaderFactory
-        arguments: [ @agit.common.cache.persistent, @doctrine.orm.entity_manager, @?service_container ]
