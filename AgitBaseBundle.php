@@ -9,26 +9,9 @@
 
 namespace Agit\BaseBundle
 {
-    use Agit\BaseBundle\DependencyInjection\RegisterPluggableServicesCompilerPass;
-    use Agit\BaseBundle\DependencyInjection\RegisterProcessorsCompilerPass;
-    use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-    use Symfony\Component\DependencyInjection\ContainerBuilder;
     use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-    class AgitBaseBundle extends Bundle
-    {
-        public function build(ContainerBuilder $containerBuilder)
-        {
-            parent::build($containerBuilder);
-
-            $containerBuilder->addCompilerPass(new RegisterProcessorsCompilerPass());
-
-            $containerBuilder->addCompilerPass(
-                new RegisterPluggableServicesCompilerPass(),
-                PassConfig::TYPE_AFTER_REMOVING
-            );
-        }
-    }
+    class AgitBaseBundle extends Bundle { }
 }
 
 // quick and dirty variable dumper
