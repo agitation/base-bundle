@@ -9,6 +9,8 @@
 
 namespace Agit\BaseBundle\Service;
 
+use Agit\BaseBundle\Exception\InternalErrorException;
+use ReflectionClass;
 use Symfony\Component\ClassLoader\ClassMapGenerator;
 
 class ClassCollector
@@ -25,27 +27,30 @@ class ClassCollector
     /**
      * @param string $location something like `FoobarBundle:Directory:Subdir`
      */
-    public function collect($location)
+    public function collect($location, $skipAbstract = true, $skipTraits = true)
     {
         $files = $this->fileCollector->collect($location, "php");
         $classes = [];
 
         foreach ($files as $file) {
             $className = $this->getFullClass($file);
-            if (! $className) {
+            if (! $className || interface_exists($className)) {
                 continue;
             }
 
-            $classExists = class_exists($className);
+            if (! class_exists($className) && ! trait_exists($className)) {
+                throw new InternalErrorException("Class $className was found, but does not seem to be a valid class.");
+            }
 
-            if ($classExists) {
-                $refl = new \ReflectionClass($className);
-                if ($refl->isAbstract()) {
+            if ($skipAbstract || $skipTraits) {
+                $refl = new ReflectionClass($className);
+
+                if ($skipAbstract && $refl->isAbstract() || $skipTraits && $refl->isTrait()) {
                     continue;
                 }
-
-                $classes[] = $className;
             }
+
+            $classes[] = $className;
         }
 
         return $classes;

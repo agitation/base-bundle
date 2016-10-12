@@ -11,7 +11,9 @@ namespace Agit\BaseBundle
 {
     use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-    class AgitBaseBundle extends Bundle { }
+    class AgitBaseBundle extends Bundle
+    {
+    }
 }
 
 // quick and dirty variable dumper
