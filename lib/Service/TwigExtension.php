@@ -9,7 +9,6 @@
 
 namespace Agit\BaseBundle\Service;
 
-use Agit\BaseBundle\Service\UrlService;
 use Twig_Extension;
 use Twig_SimpleFunction;
 
