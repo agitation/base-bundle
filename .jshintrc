@@ -1,0 +1,14 @@
+{
+    "esversion" : 5,
+    "eqeqeq": true,
+    "nocomma": true,
+    "expr" : true,
+    "browser": true,
+    "jquery" : true,
+    "predef": [ "ag" ],
+    "maxerr": 100,
+    "freeze" : true,
+    "nonew" : true,
+    "undef": true,
+    "unused": true
+}
