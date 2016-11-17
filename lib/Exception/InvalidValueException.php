@@ -14,5 +14,5 @@ namespace Agit\BaseBundle\Exception;
  */
 class InvalidValueException extends AgitException
 {
-    protected $httpStatus = 400;
+    protected $statusCode = 400;
 }

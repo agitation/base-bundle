@@ -9,22 +9,30 @@
 
 namespace Agit\BaseBundle\Exception;
 
+use Exception;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+
 /**
  * The mother of all Agitation exceptions.
  *
  * NOTE: When extending this class, remember to set an appropriate status code.
  */
-abstract class AgitException extends \Exception
+abstract class AgitException extends Exception implements HttpExceptionInterface
 {
-    protected $httpStatus = 500;
+    protected $statusCode = 500;
 
     /**
      * Returns an HTTP status which indicates the type of error.
      *
      * @return int the numeric HTTP status code.
      */
-    public function getHttpStatus()
+    public function getStatusCode()
     {
-        return $this->httpStatus;
+        return $this->statusCode;
+    }
+
+    public function getHeaders()
+    {
+        return [];
     }
 }

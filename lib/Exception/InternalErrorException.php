@@ -15,5 +15,5 @@ namespace Agit\BaseBundle\Exception;
  */
 class InternalErrorException extends AgitException
 {
-    protected $httpStatus = 500;
+    protected $statusCode = 500;
 }
