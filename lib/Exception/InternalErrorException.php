@@ -9,11 +9,8 @@
 
 namespace Agit\BaseBundle\Exception;
 
-/**
- * We've messed something up internally, and now a certain process cannot
- * continue.
- */
-class InternalErrorException extends AgitException
+use RuntimeException;
+
+class InternalErrorException extends RuntimeException
 {
-    protected $statusCode = 500;
 }

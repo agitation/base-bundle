@@ -9,7 +9,7 @@
 
 namespace Agit\BaseBundle\Exception;
 
-use Exception;
+use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
@@ -17,7 +17,7 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
  *
  * NOTE: When extending this class, remember to set an appropriate status code.
  */
-abstract class AgitException extends Exception implements HttpExceptionInterface
+abstract class AgitException extends RuntimeException implements HttpExceptionInterface
 {
     protected $statusCode = 500;
 
