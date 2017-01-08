@@ -13,11 +13,9 @@ use RuntimeException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 /**
- * The mother of all Agitation exceptions.
- *
  * NOTE: When extending this class, remember to set an appropriate status code.
  */
-abstract class AgitException extends RuntimeException implements HttpExceptionInterface
+abstract class PublicException extends RuntimeException implements HttpExceptionInterface
 {
     protected $statusCode = 500;
 
