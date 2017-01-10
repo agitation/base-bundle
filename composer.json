@@ -1,7 +1,6 @@
 {
     "name": "agitation/base-bundle",
     "type": "symfony-bundle",
-    "minimum-stability": "dev",
     "require": {
         "php": ">=5.4.9",
         "symfony/symfony": "2.8.*",
