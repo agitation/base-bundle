@@ -3,10 +3,6 @@ services:
         class: Agit\BaseBundle\Service\FileCollector
         arguments: [ "@kernel" ]
 
-    agit.common.classcollector:
-        class: Agit\BaseBundle\Service\ClassCollector
-        arguments: [ "@agit.common.filecollector" ]
-
     agit.common.url:
         class: Agit\BaseBundle\Service\UrlService
         arguments: [ "%agit.common.domain.app%", "%agit.common.domain.cdn%", "%agit.common.force.https%" ]
