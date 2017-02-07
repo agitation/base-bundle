@@ -1,16 +1,4 @@
-parameters:
-    agit.common.cachedir: %kernel.cache_dir%/agit
-    agit.common.php.version: ">=5.4.9"
-    agit.common.symfony.version: "2.3.*"
-
 services:
-    agit.common.cache.persistent:
-        class: Doctrine\Common\Cache\FilesystemCache
-        arguments: [ "%agit.common.cachedir%" ]
-
-    agit.common.cache.volatile:
-        class: Doctrine\Common\Cache\ApcCache
-
     agit.common.filecollector:
         class: Agit\BaseBundle\Service\FileCollector
         arguments: [ "@kernel" ]
