@@ -17,44 +17,42 @@ class UrlService
 
     private $protocol;
 
-    public function __construct($appDomain, $cdnDomain, $forceHttps)
+    public function __construct($appDomain, $cdnDomain)
     {
-        $this->domains = [
-            'app' => $appDomain,
-            'cdn' => $cdnDomain];
+        $this->domains = ["app" => $appDomain, "cdn" => $cdnDomain];
 
-        $this->protocol = ($forceHttps || (isset($_SERVER['HTTPS']) && (bool) $_SERVER['HTTPS'] && strtolower($_SERVER['HTTPS']) !== 'off'))
-            ? 'https'
-            : 'http';
+        $this->protocol = (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) !== "off")
+            ? "https"
+            : "http";
     }
 
     public function getAppDomain()
     {
-        return $this->domains['app'];
+        return $this->domains["app"];
     }
 
     public function getCdnDomain()
     {
-        return $this->domains['cdn'];
+        return $this->domains["cdn"];
     }
 
-    public function createAppUrl($path = '', array $params = [])
+    public function createAppUrl($path = "", array $params = [])
     {
-        return $this->createUrl('app', $path, $params);
+        return $this->createUrl("app", $path, $params);
     }
 
-    public function createCdnUrl($path = '', array $params = [])
+    public function createCdnUrl($path = "", array $params = [])
     {
-        return $this->createUrl('cdn', $path, $params);
+        return $this->createUrl("cdn", $path, $params);
     }
 
-    public function createUrl($type, $path = '', array $params = [])
+    public function createUrl($type, $path = "", array $params = [])
     {
         if (! isset($this->domains[$type])) {
             throw new InternalErrorException("Invalid domain type");
         }
 
-        $url = sprintf("%s://%s/%s", $this->protocol, $this->domains[$type], ltrim($path, '/'));
+        $url = sprintf("%s://%s/%s", $this->protocol, $this->domains[$type], ltrim($path, "/"));
 
         if (count($params)) {
             $url = $this->append($url, $params);
@@ -66,14 +64,14 @@ class UrlService
     /**
      * append request parameters to a given URL.
      */
-    public function append($url, array $params, $enctype = '')
+    public function append($url, array $params, $enctype = "")
     {
-        if ($enctype === 'html') {
-            $amp = '&amp;';
-        } elseif ($enctype === 'url') {
-            $amp = '%26';
+        if ($enctype === "html") {
+            $amp = "&amp;";
+        } elseif ($enctype === "url") {
+            $amp = "%26";
         } else {
-            $amp = '&';
+            $amp = "&";
         }
 
         foreach ($params as $key => $value) {
@@ -90,7 +88,7 @@ class UrlService
                 $urlpart = "$key=$value";
             }
 
-            $url .= (strpos($url, '?') ? $amp : '?') . $urlpart;
+            $url .= (strpos($url, "?") ? $amp : "?") . $urlpart;
         }
 
         return $url;
