@@ -11,7 +11,7 @@ namespace Agit\BaseBundle\Entity;
 
 trait IdentityAwareTrait
 {
-    protected static $entityClassName;
+    protected static $entityClass;
 
     // NOTE: The $id property and its annotations must be defined in a "child" trait or an entity.
 
@@ -35,31 +35,31 @@ trait IdentityAwareTrait
      */
     public function __toString()
     {
-        return $this->getEntityClass() . '-' . (string) $this->getId();
+        return self::getEntityClass() . '-' . (string) $this->getId();
     }
 
-    public function getEntityClass()
+    public static function getEntityClass()
     {
-        if (! self::$entityClassName) {
-            $className = get_class($this);
+        if (! self::$entityClass) {
+            $class = get_called_class();
 
-            if (strpos($className, 'Prox') !== false) {
-                $className = get_parent_class($this);
+            if (strpos($class, 'Prox') !== false) {
+                $class = get_parent_class($class);
             }
 
-            if (strpos($className, '\\') !== false) {
-                $className = substr(strrchr($className, "\\"), 1);
+            if (strpos($class, '\\') !== false) {
+                $class = substr(strrchr($class, "\\"), 1);
             }
 
-            self::$entityClassName = $className;
+            self::$entityClass = $class;
         }
 
-        return self::$entityClassName;
+        return self::$entityClass;
     }
 
     // can be overridden with something that returns the natural, localized entity name.
-    public function getEntityName()
+    public static function getEntityClassName()
     {
-        return $this->getEntityClass();
+        return self::getEntityClass();
     }
 }

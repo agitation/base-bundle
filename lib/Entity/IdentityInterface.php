@@ -15,7 +15,7 @@ interface IdentityInterface
 
     public function __toString();
 
-    public function getEntityClass();
+    public static function getEntityClass();
 
-    public function getEntityName();
+    public static function getEntityClassName();
 }
