@@ -1,4 +1,8 @@
 services:
+    agit.entity:
+        class: Agit\BaseBundle\Service\EntityService
+        arguments: [ "@doctrine.orm.entity_manager" ]
+
     agit.common.filecollector:
         class: Agit\BaseBundle\Service\FileCollector
         arguments: [ "@kernel" ]
