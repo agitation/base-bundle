@@ -13,6 +13,7 @@ use Agit\BaseBundle\Entity\IdentityInterface;
 use Agit\BaseBundle\Exception\InvalidEntityFieldException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\UnitOfWork;
 
 class EntityService
 {
@@ -38,6 +39,11 @@ class EntityService
     public function updateEntity(IdentityInterface $entity, array $data, array $protectedFields = [])
     {
         $em = $this->entityManager;
+
+        // sometimes, we have stale entities in memory/cache
+        if ($this->entityManager->getUnitOfWork()->getEntityState($entity) === UnitOfWork::STATE_MANAGED) {
+            $em->refresh($entity);
+        }
 
         foreach ($data as $field => $value) {
             if ($field === "id" || in_array($field, $protectedFields)) {
