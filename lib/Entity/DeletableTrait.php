@@ -22,7 +22,7 @@ trait DeletableTrait
      * @ORM\Column(type="boolean")
      * @Assert\NotNull
      */
-    protected $deleted = false;
+    private $deleted = false;
 
     public function setDeleted($deleted)
     {
