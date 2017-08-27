@@ -73,7 +73,7 @@ class EntityService
                             $val = $em->getReference($targetEntity, $val);
                         }
 
-                        $child->add($em->getReference($targetEntity, $val));
+                        $child->add($val);
                     }
                 }
             } else {
