@@ -15,15 +15,9 @@ class UrlService
 {
     private $domains = [];
 
-    private $protocol;
-
     public function __construct($appDomain, $cdnDomain)
     {
         $this->domains = ["app" => $appDomain, "cdn" => $cdnDomain];
-
-        $this->protocol = (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) !== "off")
-            ? "https"
-            : "http";
     }
 
     public function getAppDomain()
@@ -36,29 +30,29 @@ class UrlService
         return $this->domains["cdn"];
     }
 
-    public function createAppUrl($path = "", array $params = [])
-    {
-        return $this->createUrl("app", $path, $params);
-    }
-
-    public function createCdnUrl($path = "", array $params = [])
-    {
-        return $this->createUrl("cdn", $path, $params);
-    }
-
-    public function createUrl($type, $path = "", array $params = [])
+    public function createUrl($type, $path = "", array $params = [], $protocol = "https")
     {
         if (! isset($this->domains[$type])) {
             throw new InternalErrorException("Invalid domain type");
         }
 
-        $url = sprintf("%s://%s/%s", $this->protocol, $this->domains[$type], ltrim($path, "/"));
+        $url = sprintf("%s://%s/%s", $protocol, $this->domains[$type], ltrim($path, "/"));
 
         if (count($params)) {
             $url = $this->append($url, $params);
         }
 
         return $url;
+    }
+
+    public function createAppUrl($path = "", array $params = [], $protocol = "https")
+    {
+        return $this->createUrl("app", $path, $params, $protocol);
+    }
+
+    public function createCdnUrl($path = "", array $params = [], $protocol = "https")
+    {
+        return $this->createUrl("cdn", $path, $params, $protocol);
     }
 
     /**
