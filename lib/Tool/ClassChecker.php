@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -24,13 +24,16 @@ class ClassChecker
      */
     public static function isObjectArray($array, $className)
     {
-        if (! is_array($array)) {
-            throw new RuntimeException("The variable must be an array.");
+        if (! is_array($array))
+        {
+            throw new RuntimeException('The variable must be an array.');
         }
 
-        foreach ($array as $value) {
-            if (! ($value instanceof $className)) {
-                throw new RuntimeException(sprintf("The variable must be an instance of %s.", $className));
+        foreach ($array as $value)
+        {
+            if (! ($value instanceof $className))
+            {
+                throw new RuntimeException(sprintf('The variable must be an instance of %s.', $className));
             }
         }
     }

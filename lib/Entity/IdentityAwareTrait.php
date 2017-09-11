@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -12,18 +12,6 @@ namespace Agit\BaseBundle\Entity;
 trait IdentityAwareTrait
 {
     protected static $entityClass;
-
-    // NOTE: The $id property and its annotations must be defined in a "child" trait or an entity.
-
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     public function __debugInfo()
     {
@@ -38,17 +26,32 @@ trait IdentityAwareTrait
         return self::getEntityClass() . '-' . (string) $this->getId();
     }
 
+    // NOTE: The $id property and its annotations must be defined in a "child" trait or an entity.
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
     public static function getEntityClass()
     {
-        if (! self::$entityClass) {
+        if (! self::$entityClass)
+        {
             $class = get_called_class();
 
-            if (strpos($class, 'Prox') !== false) {
+            if (strpos($class, 'Prox') !== false)
+            {
                 $class = get_parent_class($class);
             }
 
-            if (strpos($class, '\\') !== false) {
-                $class = substr(strrchr($class, "\\"), 1);
+            if (strpos($class, '\\') !== false)
+            {
+                $class = substr(strrchr($class, '\\'), 1);
             }
 
             self::$entityClass = $class;

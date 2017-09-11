@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -41,43 +41,57 @@ class EntityService
         $em = $this->entityManager;
 
         // sometimes, we have stale entities in memory/cache
-        if ($this->entityManager->getUnitOfWork()->getEntityState($entity) === UnitOfWork::STATE_MANAGED) {
+        if ($this->entityManager->getUnitOfWork()->getEntityState($entity) === UnitOfWork::STATE_MANAGED)
+        {
             $em->refresh($entity);
         }
 
-        foreach ($data as $field => $value) {
-            if ($field === "id" || in_array($field, $protectedFields)) {
-                throw new InvalidEntityFieldException(sprintf("The `%s` field cannot be updated with this method.", $field));
+        foreach ($data as $field => $value)
+        {
+            if ($field === 'id' || in_array($field, $protectedFields))
+            {
+                throw new InvalidEntityFieldException(sprintf('The `%s` field cannot be updated with this method.', $field));
             }
 
             $meta = $em->getClassMetadata(get_class($entity));
 
-            if ($meta->hasField($field)) {
+            if ($meta->hasField($field))
+            {
                 $meta->setFieldValue($entity, $field, $value);
-            } elseif ($meta->hasAssociation($field)) {
+            }
+            elseif ($meta->hasAssociation($field))
+            {
                 $mapping = $meta->getAssociationMapping($field);
-                $targetEntity = $mapping["targetEntity"];
+                $targetEntity = $mapping['targetEntity'];
 
-                if ($mapping["type"] & ClassMetadataInfo::TO_ONE) {
-                    if (is_scalar($value)) {
+                if ($mapping['type'] & ClassMetadataInfo::TO_ONE)
+                {
+                    if (is_scalar($value))
+                    {
                         $value = $em->getReference($targetEntity, $value);
                     }
 
                     $meta->setFieldValue($entity, $field, $value ?: null);
-                } elseif ($mapping["type"] & ClassMetadataInfo::TO_MANY && is_array($value)) {
+                }
+                elseif ($mapping['type'] & ClassMetadataInfo::TO_MANY && is_array($value))
+                {
                     $child = $meta->getFieldValue($entity, $field);
                     $child->clear();
 
-                    foreach ($value as $val) {
-                        if (is_scalar($val)) {
+                    foreach ($value as $val)
+                    {
+                        if (is_scalar($val))
+                        {
                             $val = $em->getReference($targetEntity, $val);
                         }
 
                         $child->add($val);
                     }
                 }
-            } else {
-                throw new InvalidEntityFieldException(sprintf("Invalid entity field: %s", $field));
+            }
+            else
+            {
+                throw new InvalidEntityFieldException(sprintf('Invalid entity field: %s', $field));
             }
         }
     }

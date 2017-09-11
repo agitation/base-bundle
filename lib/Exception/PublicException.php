@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -22,7 +22,7 @@ abstract class PublicException extends RuntimeException implements HttpException
     /**
      * Returns an HTTP status which indicates the type of error.
      *
-     * @return int the numeric HTTP status code.
+     * @return int the numeric HTTP status code
      */
     public function getStatusCode()
     {

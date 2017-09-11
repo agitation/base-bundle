@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -11,9 +11,8 @@ namespace Agit\BaseBundle\Entity;
 
 interface IdentityInterface
 {
-    public function getId();
-
     public function __toString();
+    public function getId();
 
     public static function getEntityClass();
 

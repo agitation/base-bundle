@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -17,18 +17,24 @@ namespace Agit\BaseBundle
 }
 
 // quick and dirty variable dumper
+
 namespace
 {
     function p()
     {
-        if (php_sapi_name() !== "cli") {
-            @header("Content-Type: text/plain; charset=UTF-8");
+        if (PHP_SAPI !== 'cli')
+        {
+            @header('Content-Type: text/plain; charset=UTF-8');
         }
 
-        foreach (func_get_args() as $arg) {
-            if (is_null($arg) || is_bool($arg)) {
+        foreach (func_get_args() as $arg)
+        {
+            if ($arg === null || is_bool($arg))
+            {
                 var_dump($arg);
-            } else {
+            }
+            else
+            {
                 print_r($arg);
             }
 

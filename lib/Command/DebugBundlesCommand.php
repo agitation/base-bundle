@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -26,7 +26,8 @@ class DebugBundlesCommand extends ContainerAwareCommand
     {
         $container = $this->getContainer();
 
-        foreach ($container->getParameter('kernel.bundles') as $alias => $namespace) {
+        foreach ($container->getParameter('kernel.bundles') as $alias => $namespace)
+        {
             $output->writeln($alias);
         }
     }

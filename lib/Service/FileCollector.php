@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -30,28 +30,38 @@ class FileCollector
     {
         $path = null;
 
-        try {
-            if (strpos($location, '\\') !== false) {
+        try
+        {
+            if (strpos($location, '\\') !== false)
+            {
                 $location = trim($location, '\\');
 
-                foreach ($this->getNamespaces() as $name => $namespace) {
-                    if (strpos($location, $namespace) === 0) {
+                foreach ($this->getNamespaces() as $name => $namespace)
+                {
+                    if (strpos($location, $namespace) === 0)
+                    {
                         $location = str_replace($namespace, $name, $location);
                         $location = str_replace('\\', '/', "@$location");
                         $path = $this->kernel->locateResource($location);
+
                         break;
                     }
                 }
-            } else {
+            }
+            else
+            {
                 // assuming a namespace alias in colon notation, or just a bundle name
 
-                if ($location[0] !== '@') {
+                if ($location[0] !== '@')
+                {
                     $location = "@$location";
                 }
 
                 $path = $this->kernel->locateResource(str_replace(':', '/', $location));
             }
-        } catch (\Exception $e) {
+        }
+        catch (\Exception $e)
+        {
         }
 
         return $path;
@@ -66,11 +76,13 @@ class FileCollector
         $path = $location[0] === '/' ? $location : $this->resolve($location);
         $files = [];
 
-        if ($path) {
+        if ($path)
+        {
             $finder = new Finder();
             $finder->in($path)->name("*.$extension");
 
-            foreach ($finder as $file) {
+            foreach ($finder as $file)
+            {
                 $files[] = $file->getRealpath();
             }
         }
@@ -80,10 +92,12 @@ class FileCollector
 
     private function getNamespaces()
     {
-        if (is_null($this->namespaces)) {
+        if ($this->namespaces === null)
+        {
             $this->namespaces = [];
 
-            foreach ($this->kernel->getBundles() as $name => $bundle) {
+            foreach ($this->kernel->getBundles() as $name => $bundle)
+            {
                 $this->namespaces[$name] = $bundle->getNamespace();
             }
         }

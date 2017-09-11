@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -31,7 +31,8 @@ class UrlServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             'https://app.example.com/foo/bar?a=b&c=d',
-            $urlService->createAppUrl('/foo/bar', ['a' => 'b', 'c' => 'd']));
+            $urlService->createAppUrl('/foo/bar', ['a' => 'b', 'c' => 'd'])
+        );
     }
 
     public function testCreateCdnUrl()
@@ -40,7 +41,8 @@ class UrlServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             'https://cdn.example.com/foo/bar?a=b&c=d',
-            $urlService->createCdnUrl('/foo/bar', ['a' => 'b', 'c' => 'd']));
+            $urlService->createCdnUrl('/foo/bar', ['a' => 'b', 'c' => 'd'])
+        );
     }
 
     public function testCreateUrl()
@@ -49,7 +51,8 @@ class UrlServiceTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame(
             'https://cdn.example.com/foo/bar?a=b&c=d',
-            $urlService->createUrl('cdn', '/foo/bar', ['a' => 'b', 'c' => 'd']));
+            $urlService->createUrl('cdn', '/foo/bar', ['a' => 'b', 'c' => 'd'])
+        );
     }
 
     public function testAppend()

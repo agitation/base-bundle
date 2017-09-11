@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -23,18 +23,18 @@ class TwigExtension extends Twig_Extension
 
     public function getName()
     {
-        return "agit.base";
+        return 'agit.base';
     }
 
     public function getFunctions()
     {
         return [
-            new Twig_SimpleFunction("getAppUrlBase", [$this, "getAppUrlBase"])
+            new Twig_SimpleFunction('getAppUrlBase', [$this, 'getAppUrlBase'])
         ];
     }
 
     public function getAppUrlBase()
     {
-        return $this->urlService->createAppUrl("/");
+        return $this->urlService->createAppUrl('/');
     }
 }
