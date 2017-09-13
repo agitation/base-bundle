@@ -13,45 +13,13 @@ use Agit\BaseBundle\Service\UrlService;
 
 class UrlServiceTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetAppDomain()
-    {
-        $urlService = $this->getServiceInstance();
-        $this->assertSame('app.example.com', $urlService->getAppDomain());
-    }
-
-    public function testGetCdnDomain()
-    {
-        $urlService = $this->getServiceInstance();
-        $this->assertSame('cdn.example.com', $urlService->getCdnDomain());
-    }
-
     public function testCreateAppUrl()
     {
         $urlService = $this->getServiceInstance();
 
         $this->assertSame(
-            'https://app.example.com/foo/bar?a=b&c=d',
+            '/foo/bar?a=b&c=d',
             $urlService->createAppUrl('/foo/bar', ['a' => 'b', 'c' => 'd'])
-        );
-    }
-
-    public function testCreateCdnUrl()
-    {
-        $urlService = $this->getServiceInstance();
-
-        $this->assertSame(
-            'https://cdn.example.com/foo/bar?a=b&c=d',
-            $urlService->createCdnUrl('/foo/bar', ['a' => 'b', 'c' => 'd'])
-        );
-    }
-
-    public function testCreateUrl()
-    {
-        $urlService = $this->getServiceInstance();
-
-        $this->assertSame(
-            'https://cdn.example.com/foo/bar?a=b&c=d',
-            $urlService->createUrl('cdn', '/foo/bar', ['a' => 'b', 'c' => 'd'])
         );
     }
 
@@ -67,6 +35,6 @@ class UrlServiceTest extends \PHPUnit_Framework_TestCase
 
     private function getServiceInstance()
     {
-        return new UrlService('app.example.com', 'cdn.example.com', true);
+        return new UrlService();
     }
 }

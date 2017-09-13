@@ -13,31 +13,9 @@ use Agit\BaseBundle\Exception\InternalErrorException;
 
 class UrlService
 {
-    private $domains = [];
-
-    public function __construct($appDomain, $cdnDomain)
+    public function createAppUrl($path = '', array $params = [])
     {
-        $this->domains = ['app' => $appDomain, 'cdn' => $cdnDomain];
-    }
-
-    public function getAppDomain()
-    {
-        return $this->domains['app'];
-    }
-
-    public function getCdnDomain()
-    {
-        return $this->domains['cdn'];
-    }
-
-    public function createUrl($type, $path = '', array $params = [], $protocol = 'https')
-    {
-        if (! isset($this->domains[$type]))
-        {
-            throw new InternalErrorException('Invalid domain type');
-        }
-
-        $url = sprintf('%s://%s/%s', $protocol, $this->domains[$type], ltrim($path, '/'));
+        $url = '/' . trim($path, '/');
 
         if (count($params))
         {
@@ -45,16 +23,6 @@ class UrlService
         }
 
         return $url;
-    }
-
-    public function createAppUrl($path = '', array $params = [], $protocol = 'https')
-    {
-        return $this->createUrl('app', $path, $params, $protocol);
-    }
-
-    public function createCdnUrl($path = '', array $params = [], $protocol = 'https')
-    {
-        return $this->createUrl('cdn', $path, $params, $protocol);
     }
 
     /**

@@ -9,7 +9,6 @@ services:
 
     agit.common.url:
         class: Agit\BaseBundle\Service\UrlService
-        arguments: [ "%agit.common.domain.app%", "%agit.common.domain.cdn%" ]
 
     agit.common.twig:
         class: Agit\BaseBundle\Service\TwigExtension
