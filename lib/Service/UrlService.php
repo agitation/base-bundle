@@ -9,8 +9,6 @@ declare(strict_types=1);
 
 namespace Agit\BaseBundle\Service;
 
-use Agit\BaseBundle\Exception\InternalErrorException;
-
 class UrlService
 {
     public function createAppUrl($path = '', array $params = [])
