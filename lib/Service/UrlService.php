@@ -11,13 +11,31 @@ namespace Agit\BaseBundle\Service;
 
 class UrlService
 {
-    public function createAppUrl($path = '', array $params = [])
+    public function createAppUrl($path = '', array $params = []) : string
     {
-        $url = '/' . trim($path, '/');
+        $url = $this->getUrlBase() ?: '';
+        $url .= '/' . trim($path, '/');
 
         if (count($params))
         {
             $url = $this->append($url, $params);
+        }
+
+        return $url;
+    }
+
+    public function getUrlBase() : ?string
+    {
+        $url = null;
+        $port = (int)$_SERVER['SERVER_PORT'];
+
+        if ($port)
+        {
+            $ssl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
+                (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https'));
+
+            $url = ($ssl ? 'https' : 'http') . '://' . $_SERVER['SERVER_NAME'];
+            $url .= ($ssl && $port === 443 || !$ssl && $port === 80) ? '' : ":$port";
         }
 
         return $url;
