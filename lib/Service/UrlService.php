@@ -24,6 +24,11 @@ class UrlService
         return $url;
     }
 
+    public function getAppDomain() : string
+    {
+        return isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "";
+    }
+
     public function getUrlBase() : ?string
     {
         $url = null;
@@ -34,7 +39,7 @@ class UrlService
             $ssl = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ||
                 (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https'));
 
-            $url = ($ssl ? 'https' : 'http') . '://' . $_SERVER['SERVER_NAME'];
+            $url = ($ssl ? 'https' : 'http') . '://' . $this->getAppDomain();
             $url .= ($ssl && $port === 443 || !$ssl && $port === 80) ? '' : ":$port";
         }
 

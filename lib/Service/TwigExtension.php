@@ -29,8 +29,14 @@ class TwigExtension extends Twig_Extension
     public function getFunctions()
     {
         return [
+            new Twig_SimpleFunction('getAppDomain', [$this, 'getAppDomain']),
             new Twig_SimpleFunction('getAppUrlBase', [$this, 'getAppUrlBase'])
         ];
+    }
+
+    public function getAppDomain()
+    {
+        return $this->urlService->getAppDomain();
     }
 
     public function getAppUrlBase()
