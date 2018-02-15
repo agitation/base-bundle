@@ -10,6 +10,11 @@ services:
     agit.common.url:
         class: Agit\BaseBundle\Service\UrlService
 
+    agit.common.asset_version:
+        class: Agit\BaseBundle\Service\AssetVersioningService
+        arguments: [ "%kernel.environment%" ]
+
+
     agit.common.twig:
         class: Agit\BaseBundle\Service\TwigExtension
         arguments: [ "@agit.common.url" ]
