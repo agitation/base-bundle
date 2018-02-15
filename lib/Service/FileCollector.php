@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace Agit\BaseBundle\Service;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class FileCollector
 {
@@ -18,7 +18,7 @@ class FileCollector
 
     private $namespaces;
 
-    public function __construct(Kernel $kernel)
+    public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
     }
