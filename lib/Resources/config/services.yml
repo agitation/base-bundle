@@ -10,12 +10,17 @@ services:
     agit.common.url:
         class: Agit\BaseBundle\Service\UrlService
 
-    agit.common.asset_version:
-        class: Agit\BaseBundle\Service\AssetVersioningService
-        arguments: [ "%kernel.environment%" ]
-
+    agit.common.version:
+        class: Agit\BaseBundle\Service\VersionService
+        arguments: [ "@_agit.common.cache", "%kernel.environment%" ]
+        tags: [{ name: kernel.cache_warmer }]
 
     agit.common.twig:
         class: Agit\BaseBundle\Service\TwigExtension
         arguments: [ "@agit.common.url" ]
         tags: [{ name: twig.extension }]
+
+    _agit.common.cache:
+        private : true
+        class: Doctrine\Common\Cache\FilesystemCache
+        arguments: [ "%kernel.cache_dir%/agit/common" ]
