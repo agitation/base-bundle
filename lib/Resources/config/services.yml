@@ -24,3 +24,6 @@ services:
         private : true
         class: Doctrine\Common\Cache\FilesystemCache
         arguments: [ "%kernel.cache_dir%/agit/common" ]
+
+    # alias
+    Agit\BaseBundle\Service\UrlService: "@agit.common.url"
