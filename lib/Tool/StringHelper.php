@@ -25,9 +25,9 @@ class StringHelper
     {
         $availableSets =
         [
-            'u' => 'ABCDEFGHIJKLMNPQRSTUVWXYZ',
-            'l' => 'abcdefghijklmnopqrstuvwxyz',
-            'n' => '123456789',
+            'u' => 'ABCDEFGHJKLMNPQRSTUVWXYZ',
+            'l' => 'abcdefghijklmnpqrstuvwxyz',
+            'n' => '23456789',
             'c' => '§$%/()[]-@<>|'
         ];
 
