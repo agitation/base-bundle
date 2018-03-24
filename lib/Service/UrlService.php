@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -26,7 +27,7 @@ class UrlService
 
     public function getAppDomain() : string
     {
-        return isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : "";
+        return $_SERVER['SERVER_NAME'] ?? '';
     }
 
     public function getUrlBase() : ?string

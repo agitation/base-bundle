@@ -3,14 +3,10 @@
 $header = trim(file_get_contents(__DIR__ . "/.php_cs_header"));
 
 return PhpCsFixer\Config::create()
-    ->setRules([
-        'header_comment' => array('header' => $header)
-    ])
     ->setRiskyAllowed(true)
     ->setRules([
+        'header_comment' => ['header' => $header],
         '@PSR2' => true,
-
-
         'braces' => ["position_after_control_structures" => "next"],
         'align_multiline_comment' => true,
         'binary_operator_spaces' => true,
@@ -22,10 +18,10 @@ return PhpCsFixer\Config::create()
         'function_to_constant' => true,
         'function_typehint_space' => true,
         'is_null' => ['use_yoda_style' => false],
-        'linebreak_after_opening_tag' => true,
+        'linebreak_after_opening_tag' => false,
         'native_function_casing' => true,
         'new_with_braces' => true,
-        'no_blank_lines_after_class_opening' => true,
+        'no_blank_lines_after_class_opening' => false,
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
@@ -68,4 +64,4 @@ return PhpCsFixer\Config::create()
         'visibility_required' => true,
     ])
     ->setFinder(PhpCsFixer\Finder::create()->in(__DIR__))
-    ->setCacheFile(sys_get_temp_dir() . '/.php_cs.cache');
+    ->setCacheFile(sys_get_temp_dir() . '/.php_cs.cache_' . md5(__FILE__));

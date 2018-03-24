@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /*
  * @package    agitation/base-bundle
  * @link       http://github.com/agitation/base-bundle
@@ -10,16 +11,15 @@ declare(strict_types=1);
 namespace Agit\BaseBundle\Service;
 
 use Doctrine\Common\Cache\Cache;
-use Doctrine\Common\Cache\FilesystemCache;
 
 use Symfony\Component\Asset\VersionStrategy\VersionStrategyInterface;
 use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
 
 class VersionService implements VersionStrategyInterface, CacheWarmerInterface
 {
-    const CACHE_FILE = "version";
+    const CACHE_FILE = 'version';
 
-    const DEFAULT_VERSION = "dev";
+    const DEFAULT_VERSION = 'dev';
 
     private $cache;
 
@@ -38,15 +38,16 @@ class VersionService implements VersionStrategyInterface, CacheWarmerInterface
 
     public function applyVersion($path)
     {
-        return $path . "?" . $this->getVersion($path);
+        return $path . '?' . $this->getVersion($path);
     }
 
     /**
      * @param mixed $cacheDir
+     * @param mixed $_ignored
      */
     public function warmUp($_ignored)
     {
-        $version = $this->env === "dev" ? self::DEFAULT_VERSION : (string)time();
+        $version = $this->env === 'dev' ? self::DEFAULT_VERSION : (string)time();
         $this->cache->save(self::CACHE_FILE, $version);
     }
 
