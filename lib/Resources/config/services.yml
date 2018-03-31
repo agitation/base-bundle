@@ -1,7 +1,7 @@
 services:
     agit.entity:
         class: Agit\BaseBundle\Service\EntityService
-        arguments: [ "@doctrine.orm.entity_manager" ]
+        arguments: [ "@doctrine.orm.entity_manager", "@validator" ]
 
     agit.common.filecollector:
         class: Agit\BaseBundle\Service\FileCollector

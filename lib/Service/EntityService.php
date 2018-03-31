@@ -10,11 +10,12 @@ declare(strict_types=1);
 
 namespace Agit\BaseBundle\Service;
 
-use Agit\BaseBundle\Entity\IdentityInterface;
-use Agit\BaseBundle\Exception\InvalidEntityFieldException;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Doctrine\ORM\UnitOfWork;
+
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class EntityService
 {
@@ -23,77 +24,55 @@ class EntityService
      */
     private $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    /**
+     * @var ValidatorInterface
+     */
+    private $validator;
+
+    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator)
     {
         $this->entityManager = $entityManager;
+        $this->validator = $validator;
     }
 
-    /**
-     * Fills an entity with plain data.
-     *
-     * ATTENTION: This method does not use the entity’s setters.
-     *
-     * @param IdentityInterface $entity
-     * @param array             $data
-     * @param array             $protectedFields
-     */
-    public function updateEntity(IdentityInterface $entity, array $data, array $protectedFields = [])
+    public function fill($entity, array $data, array $allowedFields)
     {
-        $em = $this->entityManager;
+        $class = get_class($entity);
+        $meta = $this->entityManager->getClassMetadata($class);
 
-        // sometimes, we have stale entities in memory/cache
-        if ($this->entityManager->getUnitOfWork()->getEntityState($entity) === UnitOfWork::STATE_MANAGED)
+        foreach ($data as $key => $value)
         {
-            $em->refresh($entity);
-        }
-
-        foreach ($data as $field => $value)
-        {
-            if ($field === 'id' || in_array($field, $protectedFields))
+            if (!in_array($key, $allowedFields))
             {
-                throw new InvalidEntityFieldException(sprintf('The `%s` field cannot be updated with this method.', $field));
+                throw new BadRequestHttpException("Cannot autofill `$key` key for $class.");
             }
 
-            $meta = $em->getClassMetadata(get_class($entity));
-
-            if ($meta->hasField($field))
+            if ($meta->hasField($key) || ($mapping = $meta->getAssociationMapping($key)) && $mapping['type'] & ClassMetadataInfo::TO_ONE)
             {
-                $meta->setFieldValue($entity, $field, $value);
-            }
-            elseif ($meta->hasAssociation($field))
-            {
-                $mapping = $meta->getAssociationMapping($field);
-                $targetEntity = $mapping['targetEntity'];
-
-                if ($mapping['type'] & ClassMetadataInfo::TO_ONE)
-                {
-                    if (is_scalar($value))
-                    {
-                        $value = $em->getReference($targetEntity, $value);
-                    }
-
-                    $meta->setFieldValue($entity, $field, $value ?: null);
-                }
-                elseif ($mapping['type'] & ClassMetadataInfo::TO_MANY && is_array($value))
-                {
-                    $child = $meta->getFieldValue($entity, $field);
-                    $child->clear();
-
-                    foreach ($value as $val)
-                    {
-                        if (is_scalar($val))
-                        {
-                            $val = $em->getReference($targetEntity, $val);
-                        }
-
-                        $child->add($val);
-                    }
-                }
-            }
-            else
-            {
-                throw new InvalidEntityFieldException(sprintf('Invalid entity field: %s', $field));
+                $meta->setFieldValue($entity, $key, $value);
             }
         }
+    }
+
+    public function validate($entity)
+    {
+        $errors = $this->validator->validate($entity);
+
+        if (count($errors) > 0)
+        {
+            $error = $errors->get(0);
+            $field = $error->getPropertyPath();
+
+            throw new BadRequestHttpException(sprintf('Error%s: %s', $field ? " in field `$field`" : '', $error->getMessage()));
+        }
+    }
+
+    protected function saveEntity($entity, array $data, array $allowedFields)
+    {
+        $this->fill($entity, $data, $allowedFields);
+        $this->validate($entity);
+
+        $this->entityManager->persist($entity);
+        $this->entityManager->flush();
     }
 }
